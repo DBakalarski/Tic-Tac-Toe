@@ -4,19 +4,19 @@ class App extends React.Component {
         progressGame: ["", "", "", "", "", "", "", "", ""],
         isWinner: false,
         isRemis: false,
+        buttonResetVisible: false,
         winnerGame: []
     }
 
     handleClick = (e) => {
         let temp = e.target.id;
         const nArray = [...this.state.progressGame];
-        nArray[temp] = this.state.isCircle === true ? "o" : "x"
+        nArray[temp] = this.state.isCircle === true ? "O" : "X"
 
         let pGame = nArray;
         let winner = false;
         let remis = false;
         let notEmptyField = 0;
-        //let winner;
 
         pGame.forEach((item) => {
             if (item !== "") {
@@ -33,21 +33,36 @@ class App extends React.Component {
             (pGame[0] !== "" && pGame[0] === pGame[4] && pGame[4] === pGame[8]) ||
             (pGame[2] !== "" && pGame[2] === pGame[4] && pGame[4] === pGame[6])
         ) {
-            //console.log(`wygrana dla ${this.state.isCircle === true ? "kółko" : "krzyżyk"}`)
-            winner = true
+
             this.state.isCircle === true ? winner = "o" : winner = "x"
-        } else if (notEmptyField == 2) {
-            remis = true
-            winner = "r"
+            this.setState({
+                isCircle: !this.state.isCircle,
+                progressGame: nArray,
+                isWinner: winner,
+                buttonResetVisible: true,
+                winnerGame: [...this.state.winnerGame, winner]
+            })
+            return
+
         }
-        console.log(notEmptyField)
-        console.log(`remis ${remis}`)
+        else if (notEmptyField == 9) {
+            winner = "r";
+            this.setState({
+                isCircle: !this.state.isCircle,
+                progressGame: nArray,
+                isWinner: false,
+                buttonResetVisible: true,
+                isRemis: true,
+                winnerGame: [...this.state.winnerGame, winner]
+            })
+            return
+
+        }
 
         this.setState({
             isCircle: !this.state.isCircle,
             progressGame: nArray,
-            isWinner: status,
-            isRemis: remis
+            isWinner: winner
         })
 
     }
@@ -64,12 +79,14 @@ class App extends React.Component {
         return squares;
     }
 
+
     reset() {
         this.setState({
             isCircle: true,
             progressGame: ["", "", "", "", "", "", "", "", ""],
             isWinner: false,
-            isRemis: false
+            isRemis: false,
+            buttonResetVisible: false
         })
     }
 
@@ -77,13 +94,17 @@ class App extends React.Component {
         return (
             <div className="container">
                 <div className="information">
-                    <ScoreBoard class={this.state.isWinner === true ? "none" : "boardScore"} player={this.state.isCircle === true ? "O" : "X"} />
+                    <ScoreBoard
+                        class={this.state.isWinner === true ? "none" : `boardScore ${this.state.isCircle === true ? "o" : "x"}`}
+                        winner0={(this.state.winnerGame.filter(item => item === "o")).length}
+                        winnerX={(this.state.winnerGame.filter(item => item === "x")).length}
+                    />
                     <Winner class={this.state.isWinner ? "block winner" : "none"} winnerPlayer={this.state.isCircle === true ? "X" : "O"} />
                     <Remis class={this.state.isRemis ? "block remis" : "none"} />
-                    <ResetButton class={this.state.isWinner ? "resetButton" : "none"} click={this.reset.bind(this)} />
+                    <ResetButton class={this.state.buttonResetVisible ? "resetButton" : "none"} click={this.reset.bind(this)} />
                 </div>
                 <ContainerToSquares
-                    isDisabled={this.state.isWinner}
+                    isDisabled={this.state.isWinner || this.state.isRemis}
                     content={this.drawBoards()}
                 />
 
@@ -92,13 +113,13 @@ class App extends React.Component {
     }
 }
 
-const ResetButton = (props) => {
+const ResetButton = props => {
     return (
         <button className={props.class} onClick={props.click}>Zacznij jeszcze raz</button>
     )
 }
 
-const SingleSquare = (props) => {
+const SingleSquare = props => {
     let classes = ["single-square"];
     if (props.isDisabled) {
         classes.push("disabled")
@@ -109,7 +130,7 @@ const SingleSquare = (props) => {
     )
 }
 
-const ContainerToSquares = (props) => {
+const ContainerToSquares = props => {
     let classes = ["squareContainer"];
     if (props.isDisabled) {
         classes.push("disabled")
@@ -121,15 +142,16 @@ const ContainerToSquares = (props) => {
 }
 
 
-const ScoreBoard = (props) => {
+const ScoreBoard = props => {
     return (
         <div className={props.class}>
-            <span>{props.player} </span>-  Twój ruch!
-        </div>
+            <div className={"circle"}><span>O</span> <span className="sign">: </span>{props.winner0}</div>
+            <div className={"cross"}><span>X</span> <span className="sign">:</span> {props.winnerX}</div>
+        </div >
     )
 }
 
-const Winner = (props) => {
+const Winner = props => {
     return (
         <div className={props.class}>
             Wygrał: <span>{props.winnerPlayer}</span>
@@ -137,7 +159,7 @@ const Winner = (props) => {
     )
 }
 
-const Remis = (props) => {
+const Remis = props => {
     return (
         <div className={props.class}>REMIS</div>
     )

@@ -18,9 +18,7 @@ body {
     margin: 20px auto;
     justify-content: center;
     flex-wrap: wrap;
-    /* font-family: 'Sniglet', cursive; */
     font-family: 'Indie Flower', cursive;
-    /* font-family: 'Caveat', cursive; */
 }
 
 
@@ -98,16 +96,35 @@ body {
     font-weight: bold;
 }
 
-.boardScore span {
-    font-size: 70px;
+.boardScore span:first-child {
+    font-family: 'Indie Flower', cursive;
     font-weight: bold;
+    font-size: 60px;
+
+}
+
+.sign {
     padding-right: 20px;
+    padding-left: 3px;
 }
 
 .boardScore {
     display: flex;
     align-items: center;
+}
 
+.circle,
+.cross {
+    display: flex;
+    align-items: center;
+}
+
+.boardScore.o .circle,
+.boardScore.x .cross {
+    border-bottom: 3px solid lightcoral;
+    width: 100px;
+    display: flex;
+    justify-content: center;
 }
 
 .resetButton {
@@ -118,4 +135,51 @@ body {
     border-radius: 5px;
     font-size: 17px;
     margin-top: 100px;
+    cursor: pointer;
+}
+
+.resetButton:hover {
+    border-color: lightcoral;
+    color: lightcoral;
+}
+
+.cross {
+    margin-left: 100px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .information {
+        width: 100%;
+    }
+
+    .squareContainer {
+        width: 80%;
+        height: 41vh;
+        max-width: none;
+        font-size: 100px;
+    }
+
+    .single-square {
+        width: 33%;
+        height: 33%;
+        font-size: 100px;
+    }
+
+    .resetButton {
+        margin-top: 10px;
+    }
+
+    .boardScore {
+        padding-left: 0;
+    }
+
+    .winner,
+    .remis {
+        padding-top: 10px;
+    }
 }
