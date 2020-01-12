@@ -137,8 +137,8 @@ body {
 }
 
 .resetButton {
-    background-color: white;
-    border: 1px solid lightgray;
+    background-color: transparent;
+    border: 2px solid lightgray;
     width: 200px;
     height: 40px;
     border-radius: 5px;
