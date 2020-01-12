@@ -6,7 +6,10 @@ class App extends React.Component {
         isRemis: false,
         buttonResetVisible: false,
         whosTurn: true,
-        winnerGame: []
+        winnerGame: [],
+        firstName: '',
+        secondName: '',
+        isModalVisible: true
     }
 
     handleClick = (e) => {
@@ -18,8 +21,6 @@ class App extends React.Component {
         let winner = false;
         let remis = false;
         let notEmptyField = 0;
-
-        //let first = true;
 
         pGame.forEach((item) => {
             if (item !== "") {
@@ -39,7 +40,6 @@ class App extends React.Component {
 
             this.state.isCircle === true ? winner = "o" : winner = "x"
             this.setState({
-                isCircle: !this.state.isCircle,
                 progressGame: nArray,
                 isWinner: winner,
                 buttonResetVisible: true,
@@ -51,7 +51,6 @@ class App extends React.Component {
         else if (notEmptyField == 9) {
             winner = "r";
             this.setState({
-                // isCircle: !this.state.isCircle,
                 isCircle: this.state.progressGame[0] == "O" ? false : true,
                 progressGame: nArray,
                 isWinner: false,
@@ -71,6 +70,10 @@ class App extends React.Component {
 
     }
 
+    startGame() {
+        const firstPlayer = window.prompt('Enter your name');
+    }
+
     drawBoards() {
         const squares = this.state.progressGame.map((item, index) => {
             return <SingleSquare
@@ -87,7 +90,6 @@ class App extends React.Component {
     reset() {
         this.setState({
             isCircle: this.state.progressGame[0] == "O" ? false : true,
-            //isCircle: !this.state.isCircle,
             progressGame: ["", "", "", "", "", "", "", "", ""],
             isWinner: false,
             isRemis: false,
@@ -95,16 +97,37 @@ class App extends React.Component {
         })
     }
 
+    getNamePlayer() {
+        const firstName = document.querySelector(".firstName").value;
+        const secondName = document.querySelector(".secondName").value;
+
+        this.setState({
+            firstName: firstName,
+            secondName: secondName,
+            isModalVisible: false
+        })
+    }
+
     render() {
         return (
             <div className="container">
                 <div className="information">
+                    <Modal
+                        class
+                        click={this.getNamePlayer.bind(this)}
+                        class={this.state.isModalVisible ? "flex modalContainer" : "none"}
+                    />
                     <ScoreBoard
                         class={this.state.isWinner === true ? "none" : `boardScore ${this.state.isCircle === true ? "o" : "x"}`}
                         winner0={(this.state.winnerGame.filter(item => item === "o")).length}
                         winnerX={(this.state.winnerGame.filter(item => item === "x")).length}
+                        firstName={this.state.firstName}
+                        secondName={this.state.secondName}
                     />
-                    <Winner class={this.state.isWinner ? "block winner" : "none"} winnerPlayer={this.state.isCircle === true ? "X" : "O"} />
+                    <Winner
+                        class={this.state.isWinner ? "block winner" : "none"}
+                        winnerPlayer={this.state.isCircle === true ? "X" : "O"}
+                    />
                     <Remis class={this.state.isRemis ? "block remis" : "none"} />
                     <ResetButton class={this.state.buttonResetVisible ? "resetButton" : "none"} click={this.reset.bind(this)} />
                 </div>
@@ -112,15 +135,27 @@ class App extends React.Component {
                     isDisabled={this.state.isWinner || this.state.isRemis}
                     content={this.drawBoards()}
                 />
-
             </div>
         )
     }
 }
+const Modal = props => {
+    return (
+        <div class={props.class}>
+            <div className="modalWindow">
+                <div>Imię pierwszego gracza</div>
+                <input className="firstName"></input>
+                <div>Imię drugiego gracza</div>
+                <input className="secondName"></input>
+                <button onClick={props.click} type="submit">Graj!</button>
+            </div>
+        </div>
+    )
+}
 
 const ResetButton = props => {
     return (
-        <button className={props.class} onClick={props.click}>Zacznij jeszcze raz</button>
+        <button className={props.class} onClick={props.click}>Kolejna runda</button>
     )
 }
 
@@ -150,8 +185,16 @@ const ContainerToSquares = props => {
 const ScoreBoard = props => {
     return (
         <div className={props.class}>
-            <div className={"circle"}><span>O</span> <span className="sign">: </span>{props.winner0}</div>
-            <div className={"cross"}><span>X</span> <span className="sign">:</span> {props.winnerX}</div>
+            <div className={"circleContainer"}>
+                <div className="circleName" >{props.firstName}</div>
+                <div className={"circle"}><span>O</span> <span className="sign">: </span>{props.winner0}</div>
+            </div>
+
+            <div className={"crossContainer"}>
+                <div className="crossName">{props.secondName}</div>
+                <div className={"cross"}><span>X</span> <span className="sign">:</span> {props.winnerX}</div>
+            </div>
+
         </div >
     )
 }
