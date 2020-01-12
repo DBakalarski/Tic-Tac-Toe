@@ -126,7 +126,7 @@ class App extends React.Component {
                     />
                     <Winner
                         class={this.state.isWinner ? "block winner" : "none"}
-                        winnerPlayer={this.state.isCircle === true ? "X" : "O"}
+                        winnerPlayer={this.state.isCircle === false ? "X" : "O"}
                     />
                     <Remis class={this.state.isRemis ? "block remis" : "none"} />
                     <ResetButton class={this.state.buttonResetVisible ? "resetButton" : "none"} click={this.reset.bind(this)} />
