@@ -26,7 +26,7 @@ class App extends React.Component {
 
         if ((pGame[0] !== "" && pGame[0] === pGame[1] && pGame[1] === pGame[2]) ||
             (pGame[3] !== "" && pGame[3] === pGame[4] && pGame[4] === pGame[5]) ||
-            (pGame[6] !== "" && pGame[6] === pGame[7] && pGame[7] === pGame[9]) ||
+            (pGame[6] !== "" && pGame[6] === pGame[7] && pGame[7] === pGame[8]) ||
             (pGame[0] !== "" && pGame[0] === pGame[3] && pGame[3] === pGame[6]) ||
             (pGame[1] !== "" && pGame[1] === pGame[4] && pGame[4] === pGame[7]) ||
             (pGame[2] !== "" && pGame[2] === pGame[5] && pGame[5] === pGame[8]) ||
