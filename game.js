@@ -5,6 +5,7 @@ class App extends React.Component {
         isWinner: false,
         isRemis: false,
         buttonResetVisible: false,
+        whosTurn: true,
         winnerGame: []
     }
 
@@ -17,6 +18,8 @@ class App extends React.Component {
         let winner = false;
         let remis = false;
         let notEmptyField = 0;
+
+        //let first = true;
 
         pGame.forEach((item) => {
             if (item !== "") {
@@ -48,7 +51,8 @@ class App extends React.Component {
         else if (notEmptyField == 9) {
             winner = "r";
             this.setState({
-                isCircle: !this.state.isCircle,
+                // isCircle: !this.state.isCircle,
+                isCircle: this.state.progressGame[0] == "O" ? false : true,
                 progressGame: nArray,
                 isWinner: false,
                 buttonResetVisible: true,
@@ -82,7 +86,8 @@ class App extends React.Component {
 
     reset() {
         this.setState({
-            isCircle: true,
+            isCircle: this.state.progressGame[0] == "O" ? false : true,
+            //isCircle: !this.state.isCircle,
             progressGame: ["", "", "", "", "", "", "", "", ""],
             isWinner: false,
             isRemis: false,
