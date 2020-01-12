@@ -121,18 +121,20 @@ body {
 .boardScore {
     display: flex;
     align-items: center;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .circle,
 .cross {
     display: flex;
     align-items: center;
+    border-bottom: 3px solid transparent;
 }
 
 .boardScore.o .circle,
 .boardScore.x .cross {
     border-bottom: 3px solid lightcoral;
-    width: 100px;
     display: flex;
     justify-content: center;
 }
@@ -166,9 +168,9 @@ body {
     margin-top: 20px
 }
 
-.crossContainer {
+/* .crossContainer {
     margin-left: 100px;
-}
+} */
 
 .circleContainer,
 .crossContainer {
@@ -250,5 +252,9 @@ body {
     .winner,
     .remis {
         padding-top: 10px;
+    }
+
+    .modalWindow {
+        font-family: sans-serif;
     }
 }
